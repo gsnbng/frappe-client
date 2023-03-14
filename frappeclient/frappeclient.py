@@ -71,7 +71,7 @@ class FrappeClient(object):
 			'cmd': 'logout',
 		})
 
-	def get_list(self, doctype, fields='"*"', filters=None, limit_start=0, limit_page_length=0, order_by=None):
+	def get_list(self, doctype, fields='"*"', filters=None, limit_start=0, limit_page_length=0, order_by=None, limit=10):
 		'''Returns list of records of a particular type'''
 		if not isinstance(fields, unicode):
 			fields = json.dumps(fields)
@@ -85,6 +85,9 @@ class FrappeClient(object):
 			params["limit_page_length"] = limit_page_length
 		if order_by:
 			params['order_by'] = order_by
+		#Introducing limit field to get no of rows beyond default 20
+		if limit:
+			params['limit'] = limit
 
 		res = self.session.get(self.url + "/api/resource/" + doctype, params=params,
 			verify=self.verify, headers=self.headers)
